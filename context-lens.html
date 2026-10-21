@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Context Lens – Content Intelligence for DV360</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#17202a;--mute:#6b7280;--line:#e4dccb;--acc:#e8541e;--ok:#1f8a5b;--warn:#c98a00;--bad:#c62f3b;--bar:#17202a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111418;--card:#1a1f26;--ink:#f1ede3;--mute:#9aa3af;--line:#2b323c;--acc:#ff7a45;--ok:#3fc48a;--warn:#e8b53a;--bad:#ff6b76;--bar:#f1ede3}}
+:root[data-theme="dark"]{--bg:#111418;--card:#1a1f26;--ink:#f1ede3;--mute:#9aa3af;--line:#2b323c;--acc:#ff7a45;--ok:#3fc48a;--warn:#e8b53a;--bad:#ff6b76;--bar:#f1ede3}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'DM Sans',system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+h1,h2{font-family:'Fraunces',Georgia,serif;font-weight:700;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(34px,6vw,60px);line-height:1.03;max-width:16ch}
+h1 em{color:var(--acc);font-style:normal}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.top b{color:var(--ink)}
+.lead{max-width:60ch;color:var(--mute);font-size:18px;margin:18px 0 0}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 38px}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13px}
+.pill b{color:var(--acc)}
+.grid{display:grid;grid-template-columns:1.05fr 1fr;gap:20px}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card h2{font-size:22px;margin-bottom:4px}
+.sub{color:var(--mute);font-size:14px;margin:0 0 14px}
+textarea,input{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;padding:12px}
+textarea{min-height:120px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.chip{font:inherit;font-size:13px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip:hover{border-color:var(--acc);color:var(--acc)}
+.btn{font:inherit;font-weight:700;background:var(--acc);color:#fff;border:0;border-radius:12px;padding:12px 22px;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.verdict{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.cat{font-family:'Fraunces',serif;font-size:28px;font-weight:700;line-height:1.1}
+.tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:999px;color:#fff;white-space:nowrap}
+.safe{background:var(--ok)}.caution{background:var(--warn)}.avoid{background:var(--bad)}
+.row{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;font-size:13px;margin:7px 0}
+.row .t{height:9px;background:var(--line);border-radius:9px;overflow:hidden}
+.row .t i{display:block;height:100%;background:var(--mute);border-radius:9px;transition:width .6s}
+.row.top .t i{background:var(--acc)}.row.top{font-weight:700}
+.act{border-top:1px dashed var(--line);margin-top:16px;padding-top:14px;font-size:14px}
+.act b{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:3px}
+.empty{color:var(--mute);padding:30px 0;text-align:center}
+section{margin-top:44px}
+section>h2{font-size:30px;margin-bottom:6px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px}
+@media(max-width:820px){.steps{grid-template-columns:1fr 1fr}}
+.step{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card);font-size:13px}
+.step span{font-family:'Fraunces',serif;font-size:26px;color:var(--acc);display:block}
+.step b{display:block;font-size:14px}
+.sel{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.sel .chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mx{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.mc{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:14px;background:var(--bg)}
+.benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.benefits .card h2{font-size:18px}.benefits p{margin:6px 0 0;color:var(--mute);font-size:14px}
+.api{display:flex;gap:8px;margin-top:12px;font-size:13px;color:var(--mute);align-items:center}
+.api input{padding:7px 10px;font-size:13px}
+.mode{font-size:12px;color:var(--mute);margin-top:10px}
+footer{margin-top:50px;color:var(--mute);font-size:13px}
+button.theme{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><span><b>WPP Media</b> · Karachi · Data Analytics</span><button class="theme" id="th">Light / Dark</button></div>
+  <h1>Know the <em>context</em> before you buy the impression.</h1>
+  <p class="lead">Context Lens reads any article’s title and summary, understands its meaning with BGE embeddings, and tells the team which topic it belongs to and whether it is safe for a brand to appear next to it.</p>
+  <div class="stats">
+    <span class="pill"><b>1024-d</b> BGE embeddings</span>
+    <span class="pill"><b>HDBSCAN</b> topic discovery</span>
+    <span class="pill"><b>8</b> content categories</span>
+    <span class="pill"><b>Cosine</b> similarity matching</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Classify an article</h2>
+      <p class="sub">Paste a summary (or pick an example) and see the category, confidence and the DV360 action.</p>
+      <div class="chips" id="chips"></div>
+      <textarea id="txt" placeholder="Paste article title and summary here…"></textarea>
+      <div style="margin-top:12px"><button class="btn" id="go">Classify →</button></div>
+      <div class="api"><span>Backend URL</span><input id="api" placeholder="http://localhost:8000 (optional – uses live BGE model)"></div>
+      <div class="mode" id="mode">Running in demo mode (keyword engine). Add your backend URL to use the real BGE model.</div>
+    </div>
+    <div class="card" id="res"><div class="empty">Results appear here.</div></div>
+  </div>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><span>1</span><b>Embed</b>Title + summary become a 1024-d vector with BAAI/bge-large.</div>
+      <div class="step"><span>2</span><b>Reduce</b>UMAP compresses to 5 dimensions, keeping neighbours close.</div>
+      <div class="step"><span>3</span><b>Cluster</b>HDBSCAN finds natural topic groups, no preset count.</div>
+      <div class="step"><span>4</span><b>Label</b>Each cluster centroid is matched to a category by cosine similarity.</div>
+      <div class="step"><span>5</span><b>Classify</b>New articles are scored against the categories instantly.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Campaign planner</h2>
+    <p class="sub">Pick an advertiser vertical to see where its ads should and should not appear. This is a starting framework for the team to refine with account managers.</p>
+    <div class="sel" id="vert"></div>
+    <div class="mx" id="mx"></div>
+  </section>
+
+  <section>
+    <h2>Why it matters for the team</h2>
+    <div class="benefits">
+      <div class="card"><h2>Brand safety</h2><p>Flag crime and sensitive news so brands can be excluded before spend is wasted or reputation is hurt.</p></div>
+      <div class="card"><h2>Contextual targeting</h2><p>Build custom topic lists for DV360 (for example, tech articles for a smartphone launch) that match the Pakistani market.</p></div>
+      <div class="card"><h2>Performance insight</h2><p>Join categories with campaign data in BigQuery and Power BI to see which content contexts drive the best CTR and conversions.</p></div>
+      <div class="card"><h2>Speed</h2><p>Thousands of articles categorised in minutes instead of manual tagging, and new topics are discovered automatically.</p></div>
+    </div>
+  </section>
+  <footer>Intern project · Segmentation &amp; classification pipeline · BGE · UMAP · HDBSCAN</footer>
+</div>
+
+<script>
+const C={
+"Education & Scholarships":{k:"university degree scholarship phd master hec stipend student admission college exam".split(" "),s:"safe",a:"Target for education and telecom data-package campaigns; strong fit for student audiences."},
+"Technology & AI":{k:"smartphone mobile ai artificial intelligence chatgpt software xiaomi oppo vivo launch gadget app tech".split(" "),s:"safe",a:"Prime inventory for device, telecom and fintech-app advertisers."},
+"Business & Economy":{k:"trade export import stock psx tax fbr inflation currency bank banking petrol rupee economy budget market".split(" "),s:"safe",a:"Good for banking, insurance and B2B; audience skews to decision makers."},
+"Politics & Governance":{k:"government prime minister cabinet election provincial notification minister assembly party".split(" "),s:"caution",a:"Brand-sensitive. Most advertisers should exclude or use tight placement controls."},
+"Sports":{k:"cricket match tournament medal squash volleyball series team player win games psl".split(" "),s:"safe",a:"High engagement. Strong for beverage, telecom and apparel brands."},
+"Health & Medical":{k:"hospital doctor mdcat dengue disease patient health medical virus treatment".split(" "),s:"caution",a:"Relevant for pharma and wellness; avoid for food and entertainment brands during outbreaks."},
+"Crime & Law Enforcement":{k:"police arrest fia fraud scam robbery murder stolen court crime suspect case".split(" "),s:"avoid",a:"Exclude in DV360 for nearly all brands. Add to the brand-safety exclusion list."},
+"Infrastructure & Local News":{k:"road motorway railway train airport city development project metro bridge karachi lahore".split(" "),s:"safe",a:"Local-intent audience; useful for real estate, auto and retail near-me campaigns."}
+};
+const EX=[["Tech","Xiaomi launches new smartphone in Pakistan with AI camera features and a competitive price."],["Crime","FIA arrests suspect in online fraud scam targeting bank customers across the city."],["Sports","Pakistan win the cricket series after a thrilling final match in the tournament."],["Business","PSX gains as inflation eases and the rupee strengthens against the dollar; FBR reports higher tax collection."],["Education","HEC announces fully funded foreign scholarships for Master’s and PhD students."]];
+const V={"Telecom":{Sports:1,"Technology & AI":1,"Education & Scholarships":1,"Crime & Law Enforcement":-1,"Politics & Governance":-1},
+"Banking & Fintech":{"Business & Economy":1,"Technology & AI":1,"Crime & Law Enforcement":-1,"Politics & Governance":-1,"Health & Medical":0},
+"FMCG / Beverage":{Sports:1,"Infrastructure & Local News":0,"Crime & Law Enforcement":-1,"Health & Medical":-1,"Politics & Governance":-1},
+"Automotive":{"Infrastructure & Local News":1,"Technology & AI":1,Sports:1,"Crime & Law Enforcement":-1},
+"Education":{"Education & Scholarships":1,"Technology & AI":1,"Crime & Law Enforcement":-1,"Politics & Governance":-1}};
+const $=id=>document.getElementById(id);
+const tr={"1":["Target","safe"],"0":["Neutral","caution"],"-1":["Avoid","avoid"]};
+$("chips").innerHTML=EX.map((e,i)=>`<button class="chip" data-i="${i}">${e[0]}</button>`).join("");
+$("chips").onclick=e=>{const i=e.target.dataset.i;if(i!==undefined){$("txt").value=EX[i][1];run()}};
+$("th").onclick=()=>{const r=document.documentElement;r.dataset.theme=(r.dataset.theme==="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme:dark)").matches))?"light":"dark"};
+function demo(t){t=t.toLowerCase();const raw={};let tot=0;
+ for(const[n,c]of Object.entries(C)){raw[n]=c.k.reduce((a,w)=>a+(t.includes(w)?1:0),0)}
+ const e=Object.fromEntries(Object.entries(raw).map(([n,v])=>[n,Math.exp(1.6*v)]));
+ const z=Object.values(e).reduce((a,b)=>a+b,0);
+ const scores=Object.fromEntries(Object.entries(e).map(([n,v])=>[n,v/z]));
+ return{scores,top:Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0],none:Math.max(...Object.values(raw))===0}}
+async function run(){const t=$("txt").value.trim();if(!t)return;let scores,top,none=false;const url=$("api").value.trim().replace(/\/$/,"");
+ if(url){try{const r=await fetch(url+"/classify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:"",summary:t})});const d=await r.json();scores=d.scores;top=d.category;$("mode").textContent="Live mode: scores from your BGE backend (cosine similarity)."}catch(e){$("mode").textContent="Could not reach backend, showing demo engine instead.";const d=demo(t);scores=d.scores;top=d.top;none=d.none}}
+ else{const d=demo(t);scores=d.scores;top=d.top;none=d.none}
+ const list=Object.entries(scores).sort((a,b)=>b[1]-a[1]);const max=list[0][1];const s=C[top].s;
+ const label={safe:"Brand safe",caution:"Use caution",avoid:"Exclude"}[s];
+ $("res").innerHTML=`<div class="verdict"><div><div class="sub" style="margin:0">Predicted category</div><div class="cat">${none?"No clear match":top}</div></div><span class="tag ${s}">${label}</span></div>`+
+ list.map(([n,v],i)=>`<div class="row ${i===0?"top":""}"><span>${n}</span><div class="t"><i style="width:${v/max*100}%"></i></div><span>${(v*100).toFixed(0)}%</span></div>`).join("")+
+ `<div class="act"><b>Recommended DV360 action</b>${none?"Low confidence. Send to manual review or widen the category definitions.":C[top].a}</div>`}
+$("go").onclick=run;
+$("vert").innerHTML=Object.keys(V).map((v,i)=>`<button class="chip ${i?"":"on"}" data-v="${v}">${v}</button>`).join("");
+function mx(v){$("mx").innerHTML=Object.keys(C).map(n=>{const x=V[v][n];const k=x===undefined?"0":String(x);return`<div class="mc"><span>${n}</span><span class="tag ${tr[k][1]}">${tr[k][0]}</span></div>`}).join("")}
+$("vert").onclick=e=>{const v=e.target.dataset.v;if(!v)return;[...$("vert").children].forEach(b=>b.classList.toggle("on",b===e.target));mx(v)};
+mx("Telecom");
+</script>
+</body>
+</html>
